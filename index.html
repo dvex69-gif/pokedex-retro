@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokédex Elements</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="battle-banner" aria-label="Banner de batalla">
+        <span>BATTLE</span>
+        <span>MODE</span>
+      </div>
+      <div class="pokemon-icons" aria-label="Entrenadores">
+        <svg class="pokeball-svg" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="28" fill="#ffffff" stroke="#111" stroke-width="3"></circle>
+          <path d="M8 32h48" stroke="#111" stroke-width="3"></path>
+          <path d="M16 32c0-8.8 7.2-16 16-16 8.8 0 16 7.2 16 16" fill="#ff3b30"></path>
+          <circle cx="32" cy="32" r="6" fill="#fff" stroke="#111" stroke-width="2"></circle>
+        </svg>
+        <img src="assets/trainer1.png" alt="Entrenador 1" class="trainer-img" />
+        <span class="vs-text">VS</span>
+        <img src="assets/trainer2.png" alt="Entrenador 2" class="trainer-img" />
+        <svg class="pokeball-svg" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="28" fill="#ffffff" stroke="#111" stroke-width="3"></circle>
+          <path d="M8 32h48" stroke="#111" stroke-width="3"></path>
+          <path d="M16 32c0-8.8 7.2-16 16-16 8.8 0 16 7.2 16 16" fill="#ff3b30"></path>
+          <circle cx="32" cy="32" r="6" fill="#fff" stroke="#111" stroke-width="2"></circle>
+        </svg>
+      </div>
+      <h1>POKÉDEX ELEMENTS</h1>
+      <p>GUÍA TÉCNICA DE COMBATE</p>
+    </header>
+    <script>
+      // Ensure trainer images load; if not, replace with an inline SVG fallback.
+      document.addEventListener('DOMContentLoaded', () => {
+        const left = document.querySelector('.pokemon-icons img[alt="Entrenador 1"]');
+        const right = document.querySelector('.pokemon-icons img[alt="Entrenador 2"]');
+
+        const fallbackSVG = (accent="#00ff00") => `<?xml version="1.0" encoding="UTF-8"?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='6' y='6' width='52' height='52' rx='6' fill='#1a1a1a' stroke='${accent}' stroke-width='2'/><circle cx='32' cy='22' r='9' fill='#ffdcb3'/><rect x='18' y='34' width='28' height='12' rx='3' fill='${accent}'/></svg>`;
+
+        function setFallback(imgEl, accent) {
+          if (!imgEl) return;
+          imgEl.onerror = null; // avoid loops
+          imgEl.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(fallbackSVG(accent));
+        }
+
+        // Try loading common public fallbacks first (if local assets missing)
+        function trySources(imgEl, sources, accent) {
+          if (!imgEl) return;
+          let i = 0;
+          imgEl.onerror = () => {
+            i += 1;
+            if (i < sources.length) imgEl.src = sources[i];
+            else setFallback(imgEl, accent);
+          };
+          if (sources.length) imgEl.src = sources[0];
+        }
+
+        // If user-provided assets exist they will load; otherwise try public sprite URLs, then fallback SVG
+        trySources(left, [
+          'assets/trainer1.png',
+          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png'
+        ], '#4da3ff');
+
+        trySources(right, [
+          'assets/trainer2.png',
+          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'
+        ], '#ff00ff');
+      });
+    </script>
+
+    <main class="container">
+      <section class="card fuego" data-type="fuego" data-pokemon="['6','150']">
+        <h2>FUEGO</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png" alt="Charizard" />
+        <p><strong>Eficaz contra:</strong> Planta, Hielo, Bicho, Acero</p>
+        <p><strong>Ejemplos:</strong> Charizard, Arcanine</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card agua" data-type="agua" data-pokemon="['9','130']">
+        <h2>AGUA</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png" alt="Blastoise" />
+        <p><strong>Eficaz contra:</strong> Fuego, Tierra, Roca</p>
+        <p><strong>Ejemplos:</strong> Blastoise, Gyarados</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card planta" data-type="planta" data-pokemon="['3','45']">
+        <h2>PLANTA</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png" alt="Venusaur" />
+        <p><strong>Eficaz contra:</strong> Agua, Tierra, Roca</p>
+        <p><strong>Ejemplos:</strong> Bulbasaur, Sceptile</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card electrico" data-type="electrico" data-pokemon="['25','26']">
+        <h2>ELÉCTRICO</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu" />
+        <p><strong>Eficaz contra:</strong> Agua, Volador</p>
+        <p><strong>Ejemplos:</strong> Pikachu, Zapdos</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card tierra" data-type="tierra" data-pokemon="['27','95']">
+        <h2>TIERRA</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/383.png" alt="Groudon" />
+        <p><strong>Eficaz contra:</strong> Fuego, Eléctrico, Veneno, Roca, Acero</p>
+        <p><strong>Ejemplos:</strong> Sandshrew, Groudon</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card hielo" data-type="hielo" data-pokemon="['131','87']">
+        <h2>HIELO</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" alt="Lapras" />
+        <p><strong>Eficaz contra:</strong> Planta, Tierra, Volador, Dragón</p>
+        <p><strong>Ejemplos:</strong> Articuno, Lapras</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card lucha" data-type="lucha" data-pokemon="['68','448']">
+        <h2>LUCHA</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/68.png" alt="Machamp" />
+        <p><strong>Eficaz contra:</strong> Normal, Hielo, Roca, Siniestro, Acero</p>
+        <p><strong>Ejemplos:</strong> Machamp, Lucario</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card psiquico" data-type="psiquico" data-pokemon="['151','65']">
+        <h2>PSÍQUICO</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" alt="Mewtwo" />
+        <p><strong>Eficaz contra:</strong> Lucha, Veneno</p>
+        <p><strong>Ejemplos:</strong> Alakazam, Mewtwo</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card fantasma" data-type="fantasma" data-pokemon="['94','200']">
+        <h2>FANTASMA</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png" alt="Gengar" />
+        <p><strong>Eficaz contra:</strong> Psíquico, Fantasma</p>
+        <p><strong>Ejemplos:</strong> Gengar, Misdreavus</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card hada" data-type="hada" data-pokemon="['35','176']">
+        <h2>HADA</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/35.png" alt="Clefairy" />
+        <p><strong>Eficaz contra:</strong> Lucha, Dragón, Siniestro</p>
+        <p><strong>Ejemplos:</strong> Clefairy, Togekiss</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+
+      <section class="card acero" data-type="acero" data-pokemon="['208','476']">
+        <h2>ACERO</h2>
+        <img class="card-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/208.png" alt="Steelix" />
+        <p><strong>Eficaz contra:</strong> Hielo, Roca, Hada</p>
+        <p><strong>Ejemplos:</strong> Steelix, Metagross</p>
+        <p class="card-hint">Clic para ver más</p>
+      </section>
+    </main>
+
+    <script>
+      const cards = document.querySelectorAll('.card');
+      let audioContext;
+
+      function playClickSound() {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(900, audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.07);
+
+        gainNode.gain.setValueAtTime(0.03, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.1);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.1);
+      }
+
+      cards.forEach((card) => {
+        card.addEventListener('mouseenter', playClickSound);
+
+        card.addEventListener('click', () => {
+          const existingExtra = card.querySelector('.extra-pokemon');
+          if (existingExtra) {
+            existingExtra.remove();
+            return;
+          }
+
+          const rawPokemon = card.dataset.pokemon || '';
+          const pokemonIds = rawPokemon.includes('[')
+            ? JSON.parse(rawPokemon.replace(/'/g, '"'))
+            : rawPokemon.split(',').map((id) => id.trim()).filter(Boolean);
+
+          const extraContainer = document.createElement('div');
+          extraContainer.className = 'extra-pokemon';
+
+          pokemonIds.forEach((id) => {
+            const img = document.createElement('img');
+            img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+            img.alt = `Pokémon ${id}`;
+            extraContainer.appendChild(img);
+          });
+
+          card.appendChild(extraContainer);
+        });
+      });
+    </script>
+  </body>
+</html>
